@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 
 	"github.com/hanguofeng/config"
-	"github.com/hanguofeng/gocaptcha"
+	"github.com/wclouds/gocaptcha"
 )
 
 var (
