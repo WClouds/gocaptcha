@@ -70,10 +70,11 @@ func (m *CImage) drawString(text string) *CImage {
 	c.SetDst(m)
 	c.SetSrc(fg)
 	i := 0
+	fontsize := int(c.PointToFix32(m.config.FontSize) >> 8)
 	for _, s := range text {
 		c.SetFont(m.config.fontManager.GetRandomFont())
-		charX := (int(c.PointToFix32(m.config.FontSize) >> 8)) * i
-		charY := int(c.PointToFix32(m.config.FontSize) >> 8)
+		charX := (fontsize) * i + int((m.config.Width - 4*fontsize)/2)
+		charY := fontsize
 		charPt := freetype.Pt(charX, charY)
 		c.DrawString(string(s), charPt)
 		i = i + 1
@@ -105,15 +106,21 @@ func randomPalette() color.Palette {
 	p[0] = color.RGBA{0xFF, 0xFF, 0xFF, 0x00}
 	// Primary color.
 	prim := color.RGBA{
-		uint8(rnd(0, 255)),
-		uint8(rnd(0, 255)),
-		uint8(rnd(0, 255)),
+		uint8(247),
+		uint8(247),
+		uint8(247),
+		0xFF,
+	}
+	content := color.RGBA{
+		uint8(37),
+		uint8(204),
+		uint8(167),
 		0xFF,
 	}
 	p[1] = prim
 	// Circle colors.
 	for i := 2; i <= colorCount; i++ {
-		p[i] = randomBrightness(prim, 255)
+		p[i] = randomBrightness(content, 255)
 	}
 
 	return p
